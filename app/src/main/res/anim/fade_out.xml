@@ -14,7 +14,7 @@
     </scale>
     
     <alpha
-        android:duration="1000"
+        android:duration="2000"
         android:fromAlpha="1.0"
         android:toAlpha="0" />
 
