@@ -2,5 +2,9 @@
     {
         "merged": "/home/pld/AndroidStudioProjects/AmazingRadio/app/build/intermediates/res/merged/debug/layout-sw600dp-v13/design_layout_snackbar.xml",
         "source": "/home/pld/AndroidStudioProjects/AmazingRadio/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/layout-sw600dp-v13/design_layout_snackbar.xml"
+    },
+    {
+        "merged": "/home/pld/ProjectAndroid/AmazingRadio/app/build/intermediates/res/merged/debug/layout-sw600dp-v13/design_layout_snackbar.xml",
+        "source": "/home/pld/ProjectAndroid/AmazingRadio/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/layout-sw600dp-v13/design_layout_snackbar.xml"
     }
 ]

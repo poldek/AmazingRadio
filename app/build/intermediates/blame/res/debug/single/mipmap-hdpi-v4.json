@@ -2,5 +2,9 @@
     {
         "merged": "/home/pld/AndroidStudioProjects/AmazingRadio/app/build/intermediates/res/merged/debug/mipmap-hdpi-v4/ic_launcher.png",
         "source": "/home/pld/AndroidStudioProjects/AmazingRadio/app/src/main/res/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/pld/ProjectAndroid/AmazingRadio/app/build/intermediates/res/merged/debug/mipmap-hdpi-v4/ic_launcher.png",
+        "source": "/home/pld/ProjectAndroid/AmazingRadio/app/src/main/res/mipmap-hdpi/ic_launcher.png"
     }
 ]
