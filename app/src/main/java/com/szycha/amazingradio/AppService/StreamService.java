@@ -24,7 +24,10 @@ public class StreamService extends Service implements
         MediaPlayer.OnErrorListener,
         MediaPlayer.OnBufferingUpdateListener {
 
-    private static final String ACTION = "com.szycha.amazingradio.AppService.ACTION";
+    private static final String ACTION_BUTTON_PLAY_PAUSE = "com.szycha.amazingradio.AppService.ACTION_PLAY_PAUSE";
+    private static final String ACTION_BITTON_CLOSE = "com.szycha.amazingradio.AppService.ACTION_CLOSE";
+
+
     // radio UNISI
     public String URL_STREAM;
 
@@ -68,27 +71,23 @@ public class StreamService extends Service implements
             URL_STREAM = intent.getStringExtra("radio_link");
             NAZWA_RADIA = intent.getStringExtra("nazwa");
 
-        } catch (RuntimeException ex) {}
+        } catch (RuntimeException ex) {
+        }
         Log.d("play", "play streaming");
         Utils.setDataBooleanToSP(this, Utils.IS_STREAM, true);
 
         if (intent != null) {
             if (intent.getAction() != null) {
-                if (intent.getAction().equals(ACTION)) {
+                if (intent.getAction().equals(ACTION_BUTTON_PLAY_PAUSE)) {
                     if (mediaPlayer.isPlaying()) {
                         initNotification("Pause", 1);
                         Utils.setDataBooleanToSP(this, Utils.IS_STREAM, false);
                         //Wysylam brodcasta do activity ze jest pausa i wszytskie buttony pausy na play
                         bufferIntent.putExtra("buffering", "2");
                         sendBroadcast(bufferIntent);
-                    } else {
-                        initNotification("Play", 0);
-                        //PLay
-                        URL_STREAM = Utils.getAdressRadia(this, Utils.ADRESS_RADIA);
-                        NAZWA_RADIA = Utils.getRadioNazwa(this, Utils.NAZWA_RADIA);
-
                     }
                 }
+
             }
         }
 
@@ -264,7 +263,7 @@ public class StreamService extends Service implements
         switch (icona) {
             case 0: //PLay
                 iconaPlayPause = android.R.drawable.ic_media_pause;
-                textPausePLay ="Pause";
+                textPausePLay = "Pause";
                 bufferIntent.putExtra("buffering", "3");
                 sendBroadcast(bufferIntent);
                 break;
@@ -279,9 +278,18 @@ public class StreamService extends Service implements
 
         //Click na play Pause
         Intent favoritesIntent = new Intent(this, StreamService.class);
-        favoritesIntent.setAction(ACTION);
+        favoritesIntent.setAction(ACTION_BUTTON_PLAY_PAUSE);
         PendingIntent favoritesPendingIntent = PendingIntent.getService(this, 1, favoritesIntent, 0);
+        //Click STOP KASOWANIE NOTY
+
+        //Click STOP KASOWANIE NOTY
+        //Intent stopIntent = new Intent(this, StreamService.class);
+        //stopIntent.setAction(ACTION_BITTON_CLOSE);
+        //PendingIntent stopFavorites = PendingIntent.getService(this, 1, stopIntent, 0);
+
+
         builder.addAction(iconaPlayPause, textPausePLay, favoritesPendingIntent);
+        //builder.addAction(android.R.drawable.ic_delete, "Stop", stopFavorites);
         builder.setContentIntent(intent);
         builder.setOngoing(true);
         notificationManager.notify(NOTIFICATION_ID, builder.build());
