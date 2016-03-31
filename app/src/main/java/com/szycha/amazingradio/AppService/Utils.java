@@ -18,6 +18,9 @@ public class Utils {
     public static final String NAZWA = "nazwa";
     public static final String NAZWA_RADIA = "nazwa_data";
 
+    public static final String ADRESS = "adress";
+    public static final String ADRESS_RADIA = "adress_radia";
+
     public static void setDataBooleanToSP(Context context, String to, boolean
             data) {
         sp = context.getSharedPreferences(PREF_NAME, 0);
@@ -53,8 +56,20 @@ public class Utils {
 
     public static String getRadioNazwa(Context context, String from) {
         sp = context.getSharedPreferences(NAZWA,0);
-        return sp.getString(from,null);
+        return sp.getString(from, null);
     }
 
 
+
+    public static void setAdressRadia(Context context, String to, String nazwa) {
+        sp = context.getSharedPreferences(ADRESS, 0);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(to, nazwa);
+        editor.commit();
+    }
+
+    public static String getAdressRadia(Context context, String from) {
+        sp = context.getSharedPreferences(ADRESS,0);
+        return sp.getString(from,null);
+    }
 }

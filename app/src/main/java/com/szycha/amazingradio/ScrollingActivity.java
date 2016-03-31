@@ -1,6 +1,5 @@
 package com.szycha.amazingradio;
 
-import android.bluetooth.le.ScanRecord;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -83,6 +80,7 @@ public class ScrollingActivity extends AppCompatActivity implements Animation.An
         adapter = new TabAdapterRecycler(this);
         recyclerView.setAdapter(adapter);
 
+
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
 
             @Override
@@ -95,6 +93,7 @@ public class ScrollingActivity extends AppCompatActivity implements Animation.An
                 serviceIntent.putExtra("nazwa", adapter.getNazwa(position));
                 radio_station = adapter.getNazwa(position);
 
+
                 //Zmiana playa na pause
 
                 if (!isStreaming) {
@@ -104,6 +103,7 @@ public class ScrollingActivity extends AppCompatActivity implements Animation.An
                     Utils.setDataBooleanToSP(ScrollingActivity.this, Utils.IS_STREAM, true);
                     Utils.setPosition(ScrollingActivity.this, Utils.POSITION_DATA, position);
                     Utils.setNazwa(ScrollingActivity.this, Utils.NAZWA_RADIA, adapter.getNazwa(position));
+                    Utils.setAdressRadia(ScrollingActivity.this, Utils.ADRESS_RADIA, adapter.getLink(position));
                 } else {
 
                     if (isStreaming) {
@@ -115,6 +115,8 @@ public class ScrollingActivity extends AppCompatActivity implements Animation.An
                         Utils.setPosition(ScrollingActivity.this, Utils.POSITION_DATA, -1);
                         adapter.setImagePLayPause(position, R.drawable.play);
                         collapsingToolbarLayout.setTitle("");
+                        adapter.setImageStart();
+
                     }
                 }
             }
@@ -149,6 +151,21 @@ public class ScrollingActivity extends AppCompatActivity implements Animation.An
             adapter.addDane(opis[a], radia[a], image[a], radio_link[a], "Data", R.drawable.play);
         }
 
+            positionGrana = Utils.getPosition(this,Utils.POSITION_DATA);
+            isStreaming = Utils.getDataBooleanFromSP(ScrollingActivity.this, Utils.IS_STREAM);
+            Log.i("INFO", " : " + isStreaming);
+            if (!isStreaming) {
+                adapter.setImagePLayPause(0,R.drawable.play);
+                Utils.setDataBooleanToSP(ScrollingActivity.this, Utils.IS_STREAM, true);
+            } else {
+                if (positionGrana != -1) {
+                    adapter.setImagePLayPause(positionGrana, R.drawable.pause);
+                }
+            }
+
+
+
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +176,7 @@ public class ScrollingActivity extends AppCompatActivity implements Animation.An
                 }
             });
         }
+        */
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
@@ -178,16 +196,12 @@ public class ScrollingActivity extends AppCompatActivity implements Animation.An
         positionGrana = Utils.getPosition(this, Utils.POSITION_DATA);
         collapsingToolbarLayout.setTitle(Utils.getRadioNazwa(this, Utils.NAZWA_RADIA));
 
-        if (positionGrana != -1) {
-            adapter.setImagePLayPause(positionGrana, R.drawable.pause);
-        }
 
         handlerInfo = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 String info = msg.getData().getString("info");
                 if (info != null) {
-                    //Toast.makeText(getApplicationContext(), ":" + info.toString(), Toast.LENGTH_SHORT).show();
                     collapsingToolbarLayout.setTitle(info);
                 }
             }
@@ -249,7 +263,19 @@ public class ScrollingActivity extends AppCompatActivity implements Animation.An
                     collapsingToolbarLayout.setTitle("Buffering ...");
                     //Pobieranie danych beffering
                     break;
+                case 2 :
+                    //wszystkie buttony  na play
+                    adapter.setImageStart();
+                    //Log.i("####","PAUSE");
+                    break;
+                case 3:
+                    //Notyfikacja play zaznaczam pozycje na pause
+                    int position = Utils.getPosition(ScrollingActivity.this, Utils.POSITION_DATA);
+                    adapter.setImagePLayPause(position,R.drawable.pause);
+                    Log.i("####"," TU: " + Utils.getPosition(ScrollingActivity.this, Utils.POSITION_DATA));
+                    break;
             }
+
         }
     };
 

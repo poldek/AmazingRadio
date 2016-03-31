@@ -6,6 +6,7 @@ package com.szycha.amazingradio.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,7 @@ public class TabAdapterRecycler extends RecyclerView.Adapter<TabAdapterRecycler.
         notifyDataSetChanged();
     }
 
-    public void removeEmpty ( int position) {
+    public void removeEmpty(int position) {
         listaDanych.remove(position);
         notifyDataSetChanged();
     }
@@ -74,18 +75,26 @@ public class TabAdapterRecycler extends RecyclerView.Adapter<TabAdapterRecycler.
         if (listaDanych.get(position).getImageUrl() != null) {
             return TYPE_IMAGE;
         } else {
-            return  TYPE_NO_IMAGE;
+            return TYPE_NO_IMAGE;
         }
     }
 
     public void setImagePLayPause(int position, int image) {
-        for (ItemData dane : listaDanych) {
-                if (dane.getImage() == R.drawable.pause) {
-                    dane.setImage(R.drawable.play);
-                }
-        }
         listaDanych.get(position).setImage(image);
         notifyDataSetChanged();
+    }
+
+
+    public void setImageStart() {
+
+        for (ItemData dane : listaDanych) {
+
+            if (dane.getImage() == R.drawable.pause) {
+                dane.setImage(R.drawable.play);
+            }
+        }
+        notifyDataSetChanged();
+
     }
 
     @Override
@@ -96,27 +105,27 @@ public class TabAdapterRecycler extends RecyclerView.Adapter<TabAdapterRecycler.
 
 
         View v = null;
-            switch (viewType) {
-                case TYPE_IMAGE:
-                    //ViewGroup vImage = (ViewGroup) mInflater.inflate(R.layout.card_view_foto, viewGroup, false); // był error
-                    //View viewImage = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view_foto, null);
-                    //ViewHolder vhImage = new ViewHolder(viewImage);
-                    //return vhImage;
-                    try {
-                        v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view_foto, viewGroup, false);
-                    } catch (Exception e) {
+        switch (viewType) {
+            case TYPE_IMAGE:
+                //ViewGroup vImage = (ViewGroup) mInflater.inflate(R.layout.card_view_foto, viewGroup, false); // był error
+                //View viewImage = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view_foto, null);
+                //ViewHolder vhImage = new ViewHolder(viewImage);
+                //return vhImage;
+                try {
+                    v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view_foto, viewGroup, false);
+                } catch (Exception e) {
 
-                    }
+                }
 
-                    break;
-                case TYPE_NO_IMAGE:
-                    //ViewGroup vBezImage = (ViewGroup) mInflater.inflate(R.layout.card_view, viewGroup, false);
-                    //View viewBezImage = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view, null);
-                    //ViewHolder vhBezImage = new ViewHolder(viewBezImage);
-                    //return vhBezImage;
-                    v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view, viewGroup, false);
-                    break;
-            }
+                break;
+            case TYPE_NO_IMAGE:
+                //ViewGroup vBezImage = (ViewGroup) mInflater.inflate(R.layout.card_view, viewGroup, false);
+                //View viewBezImage = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view, null);
+                //ViewHolder vhBezImage = new ViewHolder(viewBezImage);
+                //return vhBezImage;
+                v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view, viewGroup, false);
+                break;
+        }
 
 
         return new ViewHolder(v);
@@ -210,7 +219,7 @@ public class TabAdapterRecycler extends RecyclerView.Adapter<TabAdapterRecycler.
             db = (TextView) itemView.findViewById(R.id.dbText);
             txtData = (TextView) itemView.findViewById(R.id.txt_data);
             txtLink = (TextView) itemView.findViewById(R.id.txtLink);
-            imageViewPLayPause = (ImageView)itemView.findViewById(R.id.image_play_pause);
+            imageViewPLayPause = (ImageView) itemView.findViewById(R.id.image_play_pause);
         }
     }
 }

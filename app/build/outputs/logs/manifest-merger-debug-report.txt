@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml:2:1-37:12
+ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml:2:1-38:12
 	package
 		ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml:3:5-38
 		INJECTED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml
@@ -38,7 +38,7 @@ ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xm
 	android:name
 		ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml:10:22-76
 application
-ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml:12:5-35:19
+ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml:12:5-36:19
 MERGED from [com.android.support:appcompat-v7:23.2.1] /home/pld/ProjectAndroid/AmazingRadio/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-v4:23.2.1] /home/pld/ProjectAndroid/AmazingRadio/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:animated-vector-drawable:23.2.1] /home/pld/ProjectAndroid/AmazingRadio/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.2.1/AndroidManifest.xml:7:5-20
@@ -100,13 +100,13 @@ ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xm
 	android:name
 		ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml:27:27-74
 service#com.szycha.amazingradio.AppService.StreamService
-ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml:31:9-34:39
+ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml:32:9-35:39
 	android:enabled
-		ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml:33:13-35
+		ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml:34:13-35
 	android:exported
-		ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml:34:13-37
+		ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml:35:13-37
 	android:name
-		ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml:32:13-53
+		ADDED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml:33:13-53
 uses-sdk
 INJECTED from /home/pld/ProjectAndroid/AmazingRadio/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:appcompat-v7:23.2.1] /home/pld/ProjectAndroid/AmazingRadio/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/AndroidManifest.xml:21:5-23:78

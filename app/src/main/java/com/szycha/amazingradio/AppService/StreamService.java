@@ -24,12 +24,8 @@ public class StreamService extends Service implements
         MediaPlayer.OnErrorListener,
         MediaPlayer.OnBufferingUpdateListener {
 
-    /**
-     * for educational only
-     */
-// public static final String URL_STREAM = "http://jkt.jogjastreamers.com:8000/jisstereo?s=02766";
-
-// radio UNISI
+    private static final String ACTION = "com.szycha.amazingradio.AppService.ACTION";
+    // radio UNISI
     public String URL_STREAM;
 
     // notification
@@ -60,16 +56,42 @@ public class StreamService extends Service implements
         mediaPlayer.setOnBufferingUpdateListener(this);
 
         mediaPlayer.reset();
+
     }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("play", "play streaming");
+
+        //Przychodzi z Activity
         try {
             URL_STREAM = intent.getStringExtra("radio_link");
             NAZWA_RADIA = intent.getStringExtra("nazwa");
 
-        }catch (RuntimeException ex) {}
+        } catch (RuntimeException ex) {}
+        Log.d("play", "play streaming");
+        Utils.setDataBooleanToSP(this, Utils.IS_STREAM, true);
+
+        if (intent != null) {
+            if (intent.getAction() != null) {
+                if (intent.getAction().equals(ACTION)) {
+                    if (mediaPlayer.isPlaying()) {
+                        initNotification("Pause", 1);
+                        Utils.setDataBooleanToSP(this, Utils.IS_STREAM, false);
+                        //Wysylam brodcasta do activity ze jest pausa i wszytskie buttony pausy na play
+                        bufferIntent.putExtra("buffering", "2");
+                        sendBroadcast(bufferIntent);
+                    } else {
+                        initNotification("Play", 0);
+                        //PLay
+                        URL_STREAM = Utils.getAdressRadia(this, Utils.ADRESS_RADIA);
+                        NAZWA_RADIA = Utils.getRadioNazwa(this, Utils.NAZWA_RADIA);
+
+                    }
+                }
+            }
+        }
+
 
         telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         phoneStateListener = new PhoneStateListener() {
@@ -96,9 +118,6 @@ public class StreamService extends Service implements
         };
 
         telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
-
-        initNotification(NAZWA_RADIA);
-
         mediaPlayer.reset();
 
         /**
@@ -106,11 +125,12 @@ public class StreamService extends Service implements
          */
         if (!mediaPlayer.isPlaying()) {
             try {
-                Log.d("streamm", "" + URL_STREAM);
+//                Log.d("streamm", "" + URL_STREAM);
                 mediaPlayer.setDataSource(URL_STREAM);
 
                 // sent to UI radio is buffer
                 sendBufferingBroadcast();
+                initNotification(NAZWA_RADIA, 0); //play
 
                 mediaPlayer.prepareAsync();
             } catch (IllegalArgumentException e) {
@@ -119,8 +139,11 @@ public class StreamService extends Service implements
                 Log.d("error", e.getMessage());
             } catch (IOException e) {
                 Log.d("error", e.getMessage());
+            } catch (RuntimeException ex) {
+
             }
         }
+
 
         return START_STICKY;
     }
@@ -170,8 +193,11 @@ public class StreamService extends Service implements
 
 
     private void pauseMedia() {
-        if (mediaPlayer.isPlaying())
-            mediaPlayer.pause();
+        try {
+            if (mediaPlayer.isPlaying())
+                mediaPlayer.pause();
+        } catch (IllegalStateException ex) {
+        }
     }
 
     private void playMedia() {
@@ -223,15 +249,39 @@ public class StreamService extends Service implements
     /**
      * show notificaiton
      */
-    private void initNotification(String nazwa_radia) {
+    private void initNotification(String nazwa_radia, int icona) {
 
         Intent notificationIntent = new Intent(getApplicationContext(), ScrollingActivity.class);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         PendingIntent intent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Playing Amazing Radio")
+                .setContentTitle("Amazing Radio")
                 .setContentText(nazwa_radia);
+
+        int iconaPlayPause = android.R.drawable.ic_media_pause;
+        String textPausePLay = null;
+        switch (icona) {
+            case 0: //PLay
+                iconaPlayPause = android.R.drawable.ic_media_pause;
+                textPausePLay ="Pause";
+                bufferIntent.putExtra("buffering", "3");
+                sendBroadcast(bufferIntent);
+                break;
+            case 1: //Pause
+                iconaPlayPause = android.R.drawable.ic_media_play;
+                textPausePLay = "PLay";
+
+                break;
+            default:
+                break;
+        }
+
+        //Click na play Pause
+        Intent favoritesIntent = new Intent(this, StreamService.class);
+        favoritesIntent.setAction(ACTION);
+        PendingIntent favoritesPendingIntent = PendingIntent.getService(this, 1, favoritesIntent, 0);
+        builder.addAction(iconaPlayPause, textPausePLay, favoritesPendingIntent);
         builder.setContentIntent(intent);
         builder.setOngoing(true);
         notificationManager.notify(NOTIFICATION_ID, builder.build());
